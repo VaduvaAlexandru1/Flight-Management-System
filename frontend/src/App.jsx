@@ -8,7 +8,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/api/test");
+        const response = await axios.get("/auth/login");
         console.log(response.data)
         setData(response.data)
       }
