@@ -1,26 +1,103 @@
 import axios from 'axios'
 import { useEffect , useState } from 'react'
+import {Formik , Form , Field , ErrorMessage} from "formik"
+import * as Yup from "yup"
 import './App.css'
 
 function App() {
+  
+  const validationSchema = Yup.object({
+    username : Yup.string().required("Username is required"),
+    password : Yup.string().required("Password is required")
+  })
 
-  const [data , setData] = useState({})
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/auth/login");
-        console.log(response.data)
-        setData(response.data)
-      }
-      catch (error){
-        console.log("there was an error fetching the data" , error)
+  const initialValues = {
+    username : "",
+    password : ""
+  }
+
+
+  const handleSignUp = async (values , { setSubmitting , resetForm }) => {
+    try {
+      const response = await axios.post("/auth/signup" , values)
+      console.log("User created")
+      resetForm()
+    }catch(error) {
+      console.log(error);
+      if (error.response) {
+        alert(error.response.data.message);
       }
     }
-    fetchData()
-  } , [])
+    finally{
+      setSubmitting(false)
+    }
+  }
+
+  const handleLogin = async (values , { setSubmitting , resetForm }) => {
+    try {
+      const response = await axios.post("/auth/login" , values)
+      console.log("Succes")
+      resetForm()
+    }catch(error) {
+      console.log(error);
+      if (error.response) {
+        alert(error.response.data.message);
+      }
+    }finally{
+      setSubmitting(false)
+    }
+  }
+
   return (
     <>
-      {}
+      <h1>Log-in</h1>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSignUp}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <div>
+              <label htmlFor="username">Username : </label>
+              <Field name="username"></Field>
+              <ErrorMessage name="username" component="div"></ErrorMessage>
+            </div>
+            <div>
+              <label htmlFor="password">Password : </label>
+              <Field name="password" type="password"></Field>
+              <ErrorMessage name="password" component="div"></ErrorMessage>
+            </div>
+            <button type='submit' disabled={isSubmitting}>
+              Sign-up
+            </button>
+          </Form>
+        )}
+      </Formik>
+      <h1>Log in</h1>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleLogin}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <div>
+              <label htmlFor="username">Username : </label>
+              <Field name="username"></Field>
+              <ErrorMessage name="username" component="div"></ErrorMessage>
+            </div>
+            <div>
+              <label htmlFor="password">Password : </label>
+              <Field name="password" type="password"></Field>
+              <ErrorMessage name="password" component="div"></ErrorMessage>
+            </div>
+            <button type='submit' disabled={isSubmitting}>
+              Log in
+            </button>
+          </Form>
+        )}
+      </Formik>
     </>
   )
 }
