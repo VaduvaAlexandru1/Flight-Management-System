@@ -1,105 +1,32 @@
+import "./App.css";
+import Home from "./Home/Home";
+import Login from "./Log in/Login";
+import Signup from "./Sign up/Signup";
+import { Link , Route , Routes} from "react-router-dom";
 import axios from 'axios'
-import { useEffect , useState } from 'react'
-import {Formik , Form , Field , ErrorMessage} from "formik"
-import * as Yup from "yup"
-import './App.css'
 
 function App() {
-  
-  const validationSchema = Yup.object({
-    username : Yup.string().required("Username is required"),
-    password : Yup.string().required("Password is required")
-  })
 
-  const initialValues = {
-    username : "",
-    password : ""
-  }
-
-
-  const handleSignUp = async (values , { setSubmitting , resetForm }) => {
-    try {
-      const response = await axios.post("/auth/signup" , values)
-      console.log("User created")
-      resetForm()
-    }catch(error) {
-      console.log(error);
-      if (error.response) {
-        alert(error.response.data.message);
-      }
-    }
-    finally{
-      setSubmitting(false)
-    }
-  }
-
-  const handleLogin = async (values , { setSubmitting , resetForm }) => {
-    try {
-      const response = await axios.post("/auth/login" , values)
-      console.log("Succes")
-      resetForm()
-    }catch(error) {
-      console.log(error);
-      if (error.response) {
-        alert(error.response.data.message);
-      }
-    }finally{
-      setSubmitting(false)
-    }
+  const logout = async () => {
+    const response = await axios.post('http://localhost:5000/auth/logout' , {} , {withCredentials : true})
   }
 
   return (
-    <>
-      <h1>Log-in</h1>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSignUp}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <div>
-              <label htmlFor="username">Username : </label>
-              <Field name="username"></Field>
-              <ErrorMessage name="username" component="div"></ErrorMessage>
-            </div>
-            <div>
-              <label htmlFor="password">Password : </label>
-              <Field name="password" type="password"></Field>
-              <ErrorMessage name="password" component="div"></ErrorMessage>
-            </div>
-            <button type='submit' disabled={isSubmitting}>
-              Sign-up
-            </button>
-          </Form>
-        )}
-      </Formik>
-      <h1>Log in</h1>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleLogin}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <div>
-              <label htmlFor="username">Username : </label>
-              <Field name="username"></Field>
-              <ErrorMessage name="username" component="div"></ErrorMessage>
-            </div>
-            <div>
-              <label htmlFor="password">Password : </label>
-              <Field name="password" type="password"></Field>
-              <ErrorMessage name="password" component="div"></ErrorMessage>
-            </div>
-            <button type='submit' disabled={isSubmitting}>
-              Log in
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </>
-  )
+    <div>
+      <nav>
+        <Link to="/">Home</Link> | {" "}
+        <Link to="/login">Login</Link> |{" "}
+        <Link to="/signup">Signup</Link>
+        <button onClick={logout}> Log out</button>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home></Home>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
