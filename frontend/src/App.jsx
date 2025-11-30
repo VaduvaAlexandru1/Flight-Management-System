@@ -6,6 +6,7 @@ import { Link , Route , Routes} from "react-router-dom";
 import { useState , useEffect } from "react";
 import Logout from "./Logout/Logout";
 import { checkAuth } from "./utils";
+import BecomeAdmin from "./BecomeAdmin/BecomeAdmin";
 
 function App() {
 
@@ -35,12 +36,14 @@ function App() {
         <Link to="/login">Login</Link> |{" "}
         <Link to="/signup">Signup</Link>
         <Logout onLogout={() => setIsLogged(false)}></Logout>
+        <Link to="become-admin">Become admin</Link>
       </nav>
 
       <Routes>
         <Route path="/" element={<Home isLogged={isLogged}></Home>} />
         <Route path="/login" element={<Login onLogin={() => setIsLogged(true)} />} />
         <Route path="/signup" element={<Signup onSignup={() => setIsLogged(true)}/>} />
+        <Route path="/become-admin" element={<BecomeAdmin isLogged={isLogged}/>} />
       </Routes>
     </div>
   );

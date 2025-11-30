@@ -5,10 +5,11 @@ from config import Config
 from models import *
 from flask_jwt_extended import jwt_required , JWTManager
 from flask_cors import CORS
+from wrappers import admin_required
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CORS(app , supports_credentials=True , origins=["http://localhost:5173"])
+CORS(app , supports_credentials=True )
 
 
 jwt = JWTManager(app)
@@ -25,6 +26,13 @@ def home():
     return jsonify({
         "message" : "Salut"
     }) , 200 
-    
+
+@app.get('/admin-panel')
+@admin_required
+def admin_panel():
+    return jsonify({
+        "message" : "this is admin panel"
+    }) , 200
+
 if __name__ == "__main__":
     app.run(debug=True)

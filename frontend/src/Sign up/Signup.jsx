@@ -9,8 +9,11 @@ const Signup = ({onSignup}) => {
   });
 
   const initialValues = {
+    firstName: "",
+    lastName: "",
     username: "",
     password: "",
+    isAdmin: false
   };
   const handleSignUp = async (values, { setSubmitting, resetForm }) => {
     try {
@@ -39,6 +42,16 @@ const Signup = ({onSignup}) => {
       >
         {({ isSubmitting }) => (
           <Form>
+            <div>
+              <label htmlFor="firstName">First name : </label>
+              <Field name="firstName"></Field>
+              <ErrorMessage name="firstName" component="div"></ErrorMessage>
+            </div>
+            <div>
+              <label htmlFor="lastName">Last name : </label>
+              <Field name="lastName"></Field>
+              <ErrorMessage name="lastName" component="div"></ErrorMessage>
+            </div>
             <div>
               <label htmlFor="username">Username : </label>
               <Field name="username"></Field>
