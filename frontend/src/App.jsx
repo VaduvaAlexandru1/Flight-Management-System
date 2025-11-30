@@ -3,13 +3,30 @@ import Home from "./Home/Home";
 import Login from "./Log in/Login";
 import Signup from "./Sign up/Signup";
 import { Link , Route , Routes} from "react-router-dom";
-import axios from 'axios'
+import { useState , useEffect } from "react";
+import Logout from "./Logout/Logout";
+import { checkAuth } from "./utils";
 
 function App() {
 
-  const logout = async () => {
-    const response = await axios.post('http://localhost:5000/auth/logout' , {} , {withCredentials : true})
-  }
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    const verify = async () => {
+    let ok
+    try{
+        ok = await checkAuth();
+        setIsLogged(ok);
+
+    }catch(err){
+        console.log(err)
+    }finally{
+        console.log(ok)
+    }
+
+    };
+    verify();
+  }, []);
 
   return (
     <div>
@@ -17,13 +34,13 @@ function App() {
         <Link to="/">Home</Link> | {" "}
         <Link to="/login">Login</Link> |{" "}
         <Link to="/signup">Signup</Link>
-        <button onClick={logout}> Log out</button>
+        <Logout onLogout={() => setIsLogged(false)}></Logout>
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home></Home>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/" element={<Home isLogged={isLogged}></Home>} />
+        <Route path="/login" element={<Login onLogin={() => setIsLogged(true)} />} />
+        <Route path="/signup" element={<Signup onSignup={() => setIsLogged(true)}/>} />
       </Routes>
     </div>
   );

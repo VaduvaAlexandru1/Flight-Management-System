@@ -2,7 +2,7 @@ import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-const Signup = () => {
+const Signup = ({onSignup}) => {
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
     password: Yup.string().required("Password is required"),
@@ -18,6 +18,7 @@ const Signup = () => {
         withCredentials: true,
       });
       console.log("Succes");
+      onSignup()
       resetForm();
     } catch (error) {
       console.log(error);
