@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { AuthContext } from "./Contexts/AuthContext";
 import AddFlight from "./Flights/AddFlight/AddFlight";
 import AdminPanel from "./AdminPanel/AdminPanel";
+import globalStyle from './global.module.css'
 function App() {
 
   const {user} = useContext(AuthContext)
@@ -16,17 +17,17 @@ function App() {
   return (
 
     <div>
-      <nav>
-        <Link to="/">Home</Link> |
+      <nav className={globalStyle["navBar"]}>
+        <Link to="/" className={globalStyle['button']}>Home</Link> 
         {!user && (
           <>
-            <Link to="/login">Login</Link> |
-            <Link to="/signup">Signup</Link> |
+            <Link to="/login" className={globalStyle['button']}>Login</Link> 
+            <Link to="/signup" className={globalStyle['button']}>Signup</Link> 
           </>
         )}
         {user && <Logout></Logout>}
-        {!user?.is_admin && user && <Link to="/become-admin">Become admin</Link>}
-        {user?.is_admin && <Link to="/admin-panel">Admin panel</Link>}
+        {!user?.is_admin && user && <Link to="/become-admin" className={globalStyle['button']}>Become admin</Link>}
+        {user?.is_admin && <Link to="/admin-panel" className={globalStyle['button']}>Admin panel</Link>}
       </nav>
 
       <Routes>

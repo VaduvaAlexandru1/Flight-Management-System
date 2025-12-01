@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AuthContext } from "../Contexts/AuthContext";
 import { useContext } from "react";
+import globalStyle from '../global.module.css'
 
 const Logout = ({}) => {
 
@@ -10,7 +11,7 @@ const Logout = ({}) => {
     await logout
   };
 
-  return <button onClick={logout}>Log out</button>;
+  return <button onClick={logout} className={globalStyle['button']}>Log out</button>;
 };
 
 export default Logout;

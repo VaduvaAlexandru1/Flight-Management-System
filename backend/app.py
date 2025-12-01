@@ -1,5 +1,6 @@
 from flask import Flask , jsonify
 from auth import auth_bp
+from flights import flights_bp
 from extensions import db
 from config import Config
 # from models import *
@@ -14,6 +15,7 @@ CORS(app , supports_credentials=True )
 
 jwt = JWTManager(app)
 app.register_blueprint(auth_bp)
+app.register_blueprint(flights_bp)
 db.init_app(app)
 
 from models.user import User
