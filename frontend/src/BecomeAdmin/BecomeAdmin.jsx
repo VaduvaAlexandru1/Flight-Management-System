@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const BecomeAdmin = ({ isLogged }) => {
+const BecomeAdmin = ({ user }) => {
   const validationSchema = Yup.object({
     adminPassword: Yup.string().required("Admin Password is required"),
   });
@@ -30,7 +30,7 @@ const BecomeAdmin = ({ isLogged }) => {
   };
   return (
     <>
-      {isLogged ? (
+      {user ? (
         <div>
           <h1>Become an admin</h1>
           <h4>Ask your supervisor for the password</h4>

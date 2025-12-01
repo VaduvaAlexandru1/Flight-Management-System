@@ -7,6 +7,8 @@ import Logout from "./Logout/Logout";
 import BecomeAdmin from "./BecomeAdmin/BecomeAdmin";
 import { useContext } from "react";
 import { AuthContext } from "./Contexts/AuthContext";
+import AddFlight from "./Flights/AddFlight/AddFlight";
+import AdminPanel from "./AdminPanel/AdminPanel";
 function App() {
 
   const {user} = useContext(AuthContext)
@@ -39,7 +41,15 @@ function App() {
         />
         <Route
           path="/become-admin"
-          element={<BecomeAdmin />}
+          element={<BecomeAdmin user={user} />}
+        />
+        <Route
+          path="/admin-panel"
+          element={<AdminPanel></AdminPanel>}
+        />
+        <Route
+          path="/flights/add"
+          element={<AddFlight></AddFlight>}
         />
       </Routes>
     </div>

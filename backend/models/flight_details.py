@@ -7,9 +7,17 @@ class FlightDetails(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     flight_id = db.Column(db.Integer, db.ForeignKey("flights.id"), nullable=False)
 
-    tip_aeronava = db.Column(db.String(50))
-    terminal_plecare = db.Column(db.String(10))
-    poarta_imbarcare = db.Column(db.String(10))
-    status_zbor = db.Column(db.String(20))
-    capacitate_totala = db.Column(db.Integer)
-    locuri_disponibile = db.Column(db.Integer)
+    aircraft_type = db.Column(db.String(50))
+    departure_terminal = db.Column(db.String(10))
+    boarding_gate = db.Column(db.String(10))
+    flight_status = db.Column(db.String(20))
+    total_capacity = db.Column(db.Integer)
+    available_seats = db.Column(db.Integer)
+    
+    def to_dict(self):
+        return {
+            "id" : self.id,
+            "flight_id" : self.flight_id,
+            "aircraft_type" : self.aircraft_type,
+            "departure_terminal" : self.departure_terminal
+        }

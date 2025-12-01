@@ -21,8 +21,8 @@ const Signup = () => {
     password: "",
     isAdmin: false,
   };
-  const handleSignUp = async (values, { resetForm, setSubmittig }) => {
-    setSubmittig(true);
+  const handleSignUp = async (values, { resetForm, setSubmitting }) => {
+    setSubmitting(true);
     try {
       await signup(
         values.firstName,
@@ -36,9 +36,10 @@ const Signup = () => {
     } catch (err) {
       if (err.message) console.log(err.message);
     } finally {
-      setSubmittig(false);
+      setSubmitting(false);
     }
   };
+
   return (
     <>
       <h1>Sign up</h1>
