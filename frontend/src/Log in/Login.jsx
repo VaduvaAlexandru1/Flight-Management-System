@@ -1,8 +1,15 @@
-import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useContext } from "react";
+import { AuthContext } from "../Contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({onLogin}) => {
+const Login = () => {
+
+  const navigate = useNavigate()
+
+  const { login } = useContext(AuthContext);
+
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
     password: Yup.string().required("Password is required"),
@@ -14,20 +21,15 @@ const Login = ({onLogin}) => {
   };
 
   const handleLogin = async (values, { setSubmitting, resetForm }) => {
+    setSubmitting(true)
     try {
-      const response = await axios.post("/auth/login", values, {
-        withCredentials: true,
-      });
-      console.log("Succes");
+      await login(values.username, values.password);
       resetForm();
-      onLogin()
-    } catch (error) {
-      console.log(error);
-      if (error.response) {
-        alert(error.response.data.message);
-      }
-    } finally {
-      setSubmitting(false);
+      navigate("/");
+    } catch (err) {
+      if (err.message) console.log(err.message);
+    }finally{
+      setSubmitting(false)
     }
   };
   return (

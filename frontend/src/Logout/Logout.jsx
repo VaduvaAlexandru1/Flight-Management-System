@@ -1,14 +1,13 @@
 import axios from "axios";
+import { AuthContext } from "../Contexts/AuthContext";
+import { useContext } from "react";
 
-const Logout = ({onLogout}) => {
-  const logout = async () => {
-    const response = await axios.post(
-      "http://localhost:5000/auth/logout",
-      {},
-      { withCredentials: true }
-    );
+const Logout = ({}) => {
 
-    onLogout()
+    const {logout} = useContext(AuthContext)
+
+  const handleLogout = async () => {
+    await logout
   };
 
   return <button onClick={logout}>Log out</button>;

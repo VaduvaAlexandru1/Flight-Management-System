@@ -1,8 +1,8 @@
-from flask import Flask , make_response , jsonify
+from flask import Flask , jsonify
 from auth import auth_bp
 from extensions import db
 from config import Config
-from models import *
+# from models import *
 from flask_jwt_extended import jwt_required , JWTManager
 from flask_cors import CORS
 from wrappers import admin_required
@@ -16,6 +16,9 @@ jwt = JWTManager(app)
 app.register_blueprint(auth_bp)
 db.init_app(app)
 
+from models.user import User
+from models.flight import Flight
+from models.flight_details import FlightDetails
 
 with app.app_context():
     db.create_all()

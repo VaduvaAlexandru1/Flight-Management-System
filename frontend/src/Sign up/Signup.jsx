@@ -1,8 +1,14 @@
-import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { AuthContext } from "../Contexts/AuthContext";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Signup = ({onSignup}) => {
+const Signup = () => {
+  const navigate = useNavigate();
+
+  const { signup } = useContext(AuthContext);
+
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
     password: Yup.string().required("Password is required"),
@@ -13,23 +19,24 @@ const Signup = ({onSignup}) => {
     lastName: "",
     username: "",
     password: "",
-    isAdmin: false
+    isAdmin: false,
   };
-  const handleSignUp = async (values, { setSubmitting, resetForm }) => {
+  const handleSignUp = async (values, { resetForm, setSubmittig }) => {
+    setSubmittig(true);
     try {
-      const response = await axios.post("/auth/signup", values, {
-        withCredentials: true,
-      });
-      console.log("Succes");
-      onSignup()
+      await signup(
+        values.firstName,
+        values.lastName,
+        values.username,
+        values.password,
+        values.isAdmin
+      );
       resetForm();
-    } catch (error) {
-      console.log(error);
-      if (error.response) {
-        alert(error.response.data.message);
-      }
+      navigate("/");
+    } catch (err) {
+      if (err.message) console.log(err.message);
     } finally {
-      setSubmitting(false);
+      setSubmittig(false);
     }
   };
   return (

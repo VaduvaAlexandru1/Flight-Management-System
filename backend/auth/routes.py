@@ -90,3 +90,20 @@ def become_admin():
     response = jsonify({"message" : "You are now admin!"})
     set_access_cookies(response , new_token)
     return response , 200 
+
+@auth_bp.get("/whoami")
+@jwt_required(locations=["cookies"])
+def whoami():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    print(user)
+    if not user:
+        return jsonify({
+            "message" : "Somthing went wrong"
+        }) , 400
+    return jsonify({
+        "user_id" : user_id,
+        "first_name" : user.first_name,
+        "last_name" : user.last_name,
+        "is_admin" : user.is_admin
+    }) , 200
