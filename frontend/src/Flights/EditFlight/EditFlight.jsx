@@ -1,11 +1,14 @@
 import axios from "axios";
 import FlightForm from "../../Forms/FlightForm";
+import { useParams } from "react-router-dom";
 
-const AddFlight = () => {
+const EditFlight = () => {
+  const { flight_id } = useParams();
+
   const handleAddFlight = async (values, { resetForm, setSubmitting }) => {
     setSubmitting(true);
     try {
-      await axios.post("http://localhost:5000/flights/new-flight", values);
+      await axios.patch("http://localhost:5000/flights/${flight_id}", values);
       resetForm();
     } catch (err) {
       console.error(err.response ? err.response.data : err);
@@ -15,11 +18,10 @@ const AddFlight = () => {
   };
 
   return (
-    <FlightForm
-      handleFn={handleAddFlight}
-      btnType="Add Flight"
-    />
+    <>
+      <FlightForm handleFn={handleAddFlight} btnType="Edit Flight" />
+    </>
   );
 };
 
-export default AddFlight;
+export default EditFlight;

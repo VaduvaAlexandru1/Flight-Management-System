@@ -8,7 +8,7 @@ const Login = () => {
 
   const navigate = useNavigate()
 
-  const { login } = useContext(AuthContext);
+  const { login , user } = useContext(AuthContext);
 
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
@@ -25,7 +25,7 @@ const Login = () => {
     try {
       await login(values.username, values.password);
       resetForm();
-      navigate("/");
+      if(user) navigate("/");
     } catch (err) {
       if (err.message) console.log(err.message);
     }finally{

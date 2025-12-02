@@ -5,19 +5,24 @@ import Signup from "./Sign up/Signup";
 import { Link, Route, Routes } from "react-router-dom";
 import Logout from "./Logout/Logout";
 import BecomeAdmin from "./BecomeAdmin/BecomeAdmin";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "./Contexts/AuthContext";
 import AddFlight from "./Flights/AddFlight/AddFlight";
 import AdminPanel from "./AdminPanel/AdminPanel";
 import globalStyle from './global.module.css'
+import FlightDetails from "./FlightDetails/FlightDetails";
+import { useNavigate } from "react-router-dom";
 function App() {
 
   const {user} = useContext(AuthContext)
+
+  const navigate = useNavigate()
 
   return (
 
     <div>
       <nav className={globalStyle["navBar"]}>
+        <button onClick={() => navigate(-1)} className={globalStyle['button']}>Back</button>
         <Link to="/" className={globalStyle['button']}>Home</Link> 
         {!user && (
           <>
@@ -51,6 +56,10 @@ function App() {
         <Route
           path="/flights/add"
           element={<AddFlight></AddFlight>}
+        />
+        <Route
+          path="/flights-by-id/:flight_id"
+          element={<FlightDetails></FlightDetails>}
         />
       </Routes>
     </div>
