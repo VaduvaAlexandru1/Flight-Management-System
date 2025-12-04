@@ -6,12 +6,15 @@ import globalStyle from "../global.module.css";
 import { useContext } from "react";
 import { AuthContext } from "../Contexts/AuthContext";
 
-const FlightCard = ({ flight, fetch }) => {
+const FlightCard = ({ flight, fetch, where }) => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
   const deleteFlight = async (flightId) => {
-    await axios.delete(`http://localhost:5000/flights/${flightId}` , {withCredentials : true});
+    await axios.delete(`http://localhost:5000/flights/${flightId}`, {
+      withCredentials: true,
+    });
+
     fetch();
   };
 
@@ -36,7 +39,8 @@ const FlightCard = ({ flight, fetch }) => {
           >
             Details
           </button>
-          {user?.is_admin ? (
+
+          {where === "admin-panel" ? (
             <>
               <button
                 onClick={() => deleteFlight(flight?.id)}
@@ -44,6 +48,7 @@ const FlightCard = ({ flight, fetch }) => {
               >
                 Delete
               </button>
+
               <Link
                 to={`/update-flight-by-id/${flight.id}`}
                 className={globalStyle["small-button"]}
@@ -52,7 +57,7 @@ const FlightCard = ({ flight, fetch }) => {
               </Link>
             </>
           ) : (
-            <button>Book</button>
+            <button className={globalStyle["small-button"]}>Book</button>
           )}
         </div>
       </div>

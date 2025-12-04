@@ -6,11 +6,11 @@ const Home = ({ user }) => {
       {user ? (
         <>
           <h1>{`Salut ${user.first_name} ${user.last_name}`}</h1>
-          <AllFlights></AllFlights>
+          <AllFlights where="home"/>
         </>
       ) : (
-        "Te rog sa te loghezi"
-      )}{" "}
+        "Please log in"
+      )}
     </>
   );
 };

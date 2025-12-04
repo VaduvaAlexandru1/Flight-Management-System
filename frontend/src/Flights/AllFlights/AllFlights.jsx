@@ -3,7 +3,7 @@ import styles from './allflights.module.css'
 import { useState , useEffect } from "react";
 import FlightCard from './../../FlightCard/FlightCard';
 
-const AllFlights = () => {
+const AllFlights = ({where}) => {
   const [flights, setFlights] = useState([]);
 
   const fetchFlights = async () => {
@@ -26,6 +26,7 @@ const AllFlights = () => {
                 key={flight.id}
                 flight={flight}
                 fetch={fetchFlights}
+                where={where}
               ></FlightCard>
             ))
           : "loading"}

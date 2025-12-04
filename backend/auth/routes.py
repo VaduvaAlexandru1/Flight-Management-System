@@ -91,19 +91,49 @@ def become_admin():
     set_access_cookies(response , new_token)
     return response , 200 
 
+
+# GET CURRENT USER
 @auth_bp.get("/whoami")
 @jwt_required(locations=["cookies"])
 def whoami():
-    user_id = get_jwt_identity()
-    user = User.query.get(user_id)
-    print(user)
+    user = get_user()
     if not user:
         return jsonify({
             "message" : "Somthing went wrong"
         }) , 400
     return jsonify({
-        "user_id" : user_id,
+        "user_id" : user.id,
         "first_name" : user.first_name,
         "last_name" : user.last_name,
         "is_admin" : user.is_admin
     }) , 200
+    
+@auth_bp.patch('/update-account')
+@jwt_required(locations=["cookies"])
+def update_account():
+    user = get_user()
+    
+    data = request.get_json(silent=True)
+    
+    if not data:
+        return jsonify({"message": "No data provided"}), 400
+    
+    try:
+        if "first_name" in data:
+            user.first_name = data["first_name"]
+        if "last_name" in data:
+            user.last_name = data["last_name"]
+        if "username" in data:
+            if User.query.filter_by(username=data["username"]).first():
+                return jsonify({"message": "User already exists"}), 400
+            user.first_name = data["username"]
+
+    except Exception as e:
+        pass
+    
+def get_user():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    
+    return user
+    

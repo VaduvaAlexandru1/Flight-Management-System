@@ -14,7 +14,7 @@ const BecomeAdmin = ({ user }) => {
   const handleBecomeAdmin = async (values, { setSubmitting, resetForm }) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/auth/become-admin",
+        "/auth/become-admin",
         values,
         { withCredentials: true }
       );

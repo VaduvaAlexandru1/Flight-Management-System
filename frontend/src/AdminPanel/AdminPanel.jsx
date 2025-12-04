@@ -13,7 +13,7 @@ const AdminPanel = () => {
         </Link>
       </div>
       <div>Here you will see the flights</div>
-      <AllFlights></AllFlights>
+      <AllFlights where='admin-panel'/>
     </>
   );
 };
