@@ -10,7 +10,7 @@ const validationSchemaFlight = Yup.object().shape({
   company: Yup.string().required("Company name is required"),
 
   details: Yup.object().shape({
-    aircraft_type: Yup.string().required("Aircraft is required"),
+    aircraft_type: Yup.string().required("Aircraft type is required"),
     departure_terminal: Yup.string().required("Departure terminal is required"),
     boarding_gate: Yup.string().required("Boarding gate is required"),
     flight_status: Yup.string().required("Flight status is required"),
@@ -19,4 +19,4 @@ const validationSchemaFlight = Yup.object().shape({
   }),
 });
 
-export default { validationSchemaFlight };
+export default validationSchemaFlight;

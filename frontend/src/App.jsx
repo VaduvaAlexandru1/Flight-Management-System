@@ -5,62 +5,61 @@ import Signup from "./Sign up/Signup";
 import { Link, Route, Routes } from "react-router-dom";
 import Logout from "./Logout/Logout";
 import BecomeAdmin from "./BecomeAdmin/BecomeAdmin";
-import { useContext, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "./Contexts/AuthContext";
 import AddFlight from "./Flights/AddFlight/AddFlight";
 import AdminPanel from "./AdminPanel/AdminPanel";
-import globalStyle from './global.module.css'
+import globalStyle from "./global.module.css";
 import FlightDetails from "./FlightDetails/FlightDetails";
 import { useNavigate } from "react-router-dom";
+import EditFlight from "./Flights/EditFlight/EditFlight";
+import Settings from "./Settings/Settings";
 function App() {
+  const { user,  } = useContext(AuthContext);
 
-  const {user} = useContext(AuthContext)
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
-
     <div>
       <nav className={globalStyle["navBar"]}>
-        <button onClick={() => navigate(-1)} className={globalStyle['button']}>Back</button>
-        <Link to="/" className={globalStyle['button']}>Home</Link> 
+        <button onClick={() => navigate(-1)} className={globalStyle["button"]}>
+          Back
+        </button>
+        <Link to="/" className={globalStyle["button"]}>
+          Home
+        </Link>
         {!user && (
           <>
-            <Link to="/login" className={globalStyle['button']}>Login</Link> 
-            <Link to="/signup" className={globalStyle['button']}>Signup</Link> 
+            <Link to="/login" className={globalStyle["button"]}>
+              Login
+            </Link>
+            <Link to="/signup" className={globalStyle["button"]}>
+              Signup
+            </Link>
           </>
         )}
         {user && <Logout></Logout>}
-        {!user?.is_admin && user && <Link to="/become-admin" className={globalStyle['button']}>Become admin</Link>}
-        {user?.is_admin && <Link to="/admin-panel" className={globalStyle['button']}>Admin panel</Link>}
+        <Link to="/settings" className={globalStyle["button"]}>
+          Settings
+        </Link>
       </nav>
 
       <Routes>
         <Route path="/" element={<Home user={user}></Home>} />
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-        <Route
-          path="/signup"
-          element={<Signup  />}
-        />
-        <Route
-          path="/become-admin"
-          element={<BecomeAdmin user={user} />}
-        />
-        <Route
-          path="/admin-panel"
-          element={<AdminPanel></AdminPanel>}
-        />
-        <Route
-          path="/flights/add"
-          element={<AddFlight></AddFlight>}
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/become-admin" element={<BecomeAdmin user={user} />} />
+        <Route path="/admin-panel" element={<AdminPanel></AdminPanel>} />
+        <Route path="/flights/add" element={<AddFlight></AddFlight>} />
         <Route
           path="/flights-by-id/:flight_id"
           element={<FlightDetails></FlightDetails>}
         />
+        <Route
+          path="/update-flight-by-id/:flight_id"
+          element={<EditFlight></EditFlight>}
+        />
+        <Route path="/settings" element=<Settings></Settings> />
       </Routes>
     </div>
   );

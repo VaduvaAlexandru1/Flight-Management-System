@@ -1,3 +1,6 @@
+from flask_jwt_extended import jwt_required
+
+from wrappers import admin_required
 from . import flights_bp
 from flask import jsonify, request
 from models.flight import Flight
@@ -8,20 +11,23 @@ import redis
 
 # REDIS CONNECTION
 
-r = redis.Redis(host="localhost", port=6349, db=0, decode_responses=True)
+r = redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
 
 
 # GET ALL FLIGHTS
 
 
 @flights_bp.get("/all")
+@jwt_required(locations=['cookies'])
 def get_all_flights():
-    # cashed_flights = r.get("all_flights")
-    # if cashed_flights:
-    #     return jsonify(json.loads(cashed_flights)), 200
+    cashed_flights = r.get("all_flights")
+    if cashed_flights:
+        return jsonify(json.loads(cashed_flights)), 200
 
     flights = Flight.query.all()
     result = [flight.to_dict() for flight in flights]
+    
+    r.set("all_flights", json.dumps(result), ex=60)
 
     return jsonify(result), 200
 
@@ -30,6 +36,7 @@ def get_all_flights():
 
 
 @flights_bp.post("/new-flight")
+@admin_required
 def new_flight():
     data = request.get_json(silent=True)
     if not data:
@@ -63,6 +70,7 @@ def new_flight():
         db.session.add(flight)
         db.session.commit()
 
+        r.delete("all_flights")
         return jsonify({"message": "Flight added", "id": flight.id}), 201
     except Exception as e:
         db.session.rollback()
@@ -71,13 +79,23 @@ def new_flight():
 
 # VIEW FLIGHT BY ID
 @flights_bp.get("/<int:flight_id>")
+@jwt_required(locations=['cookies'])
 def get_flight(flight_id):
+    
+    cached_flight = r.get(f"flight:{flight_id}")
+    if cached_flight:
+        return jsonify(json.loads(cached_flight)), 200
+    
     flight = Flight.query.filter_by(id=flight_id).first_or_404()
+    flight_data = flight.to_dict()
+    
+    r.set(f"flight:{flight_id}", json.dumps(flight_data), ex=60)
     return jsonify(flight.to_dict()) , 200
 
 
 # UPDATE FLIGHT
 @flights_bp.patch("/<int:flight_id>")
+@admin_required
 def update_flight(flight_id):
     flight = Flight.query.filter_by(id=flight_id).first_or_404()
     data = request.get_json(silent=True)
@@ -120,7 +138,10 @@ def update_flight(flight_id):
             flight.details.available_seats = details_data["available_seats"]
 
         db.session.commit()
-
+        
+        r.delete("all_flights")
+        r.delete(f"flight:{flight.id}")
+        
         return jsonify({"message": "Flight updated", "id": flight.id}), 200
 
     except Exception as e:
@@ -128,3 +149,18 @@ def update_flight(flight_id):
         return jsonify({"message": f"Error updating flight: {str(e)}"}), 400
 
 # DELETE FLIGHT
+
+@flights_bp.delete("/<int:flight_id>")
+@admin_required
+def delete_flight(flight_id):
+    flight = Flight.query.filter_by(id=flight_id).first_or_404()
+    
+    db.session.delete(flight)
+    db.session.commit()
+    
+    r.delete("all_flights")
+    r.delete(f"flight:{flight_id}")
+
+    return {"message": "Flight deleted successfully"}, 200
+    
+    

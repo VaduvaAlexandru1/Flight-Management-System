@@ -1,20 +1,25 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import validationSchemaFlight from '../ValidationSchemas'
+import validationSchemaFlight from "../ValidationSchemas";
 import initialValuesFlight from "../InitialValues";
 
-const FlightForm = ({handleFn, btnType }) => {
+const FlightForm = ({
+  handleFn,
+  btnType,
+  initialValues = initialValuesFlight,
+}) => {
   return (
     <>
       <Formik
-        initialValues={initialValuesFlight}
+        initialValues={initialValues}
         validationSchema={validationSchemaFlight}
         onSubmit={handleFn}
+        enableReinitialize={true}
       >
         {({ isSubmitting }) => (
           <Form className="flight-form">
             <div>
               <label>Flight Number</label>
-              <Field name="flight_number" type="text" />
+              <Field name="flight_number" type="text"/>
               <ErrorMessage
                 name="flight_number"
                 component="div"
@@ -80,41 +85,65 @@ const FlightForm = ({handleFn, btnType }) => {
             <div>
               <label>Aircraft Type</label>
               <Field name="details.aircraft_type" type="text" />
-              <ErrorMessage name="details.aircraft_type" component="div" />
+              <ErrorMessage
+                name="details.aircraft_type"
+                component="div"
+                className="error"
+              />
             </div>
 
             <div>
               <label>Departure Terminal</label>
               <Field name="details.departure_terminal" type="text" />
-              <ErrorMessage name="details.departure_terminal" component="div" />
+              <ErrorMessage
+                name="details.departure_terminal"
+                component="div"
+                className="error"
+              />
             </div>
 
             <div>
               <label>Boarding Gate</label>
               <Field name="details.boarding_gate" type="text" />
-              <ErrorMessage name="details.boarding_gate" component="div" />
+              <ErrorMessage
+                name="details.boarding_gate"
+                component="div"
+                className="error"
+              />
             </div>
 
             <div>
               <label>Flight Status</label>
               <Field name="details.flight_status" type="text" />
-              <ErrorMessage name="details.flight_status" component="div" />
+              <ErrorMessage
+                name="details.flight_status"
+                component="div"
+                className="error"
+              />
             </div>
 
             <div>
               <label>Total Capacity</label>
               <Field name="details.total_capacity" type="number" />
-              <ErrorMessage name="details.total_capacity" component="div" />
+              <ErrorMessage
+                name="details.total_capacity"
+                component="div"
+                className="error"
+              />
             </div>
 
             <div>
               <label>Available Seats</label>
               <Field name="details.available_seats" type="number" />
-              <ErrorMessage name="details.available_seats" component="div" />
+              <ErrorMessage
+                name="details.available_seats"
+                component="div"
+                className="error"
+              />
             </div>
 
             <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : `${btnType}`}
+              {isSubmitting ? "Submitting..." : btnType}
             </button>
           </Form>
         )}

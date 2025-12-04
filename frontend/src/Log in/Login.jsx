@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../Contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -25,13 +25,17 @@ const Login = () => {
     try {
       await login(values.username, values.password);
       resetForm();
-      if(user) navigate("/");
     } catch (err) {
       if (err.message) console.log(err.message);
     }finally{
       setSubmitting(false)
     }
   };
+
+  useEffect(() => {
+    if (! user) return
+    if (user) navigate('/')
+  } , [user])
   return (
     <>
       <h1>Log in</h1>

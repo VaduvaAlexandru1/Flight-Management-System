@@ -11,7 +11,7 @@ const FlightDetails = () => {
     const fetchFlight = async () => {
       const response = await axios.get(
         `http://localhost:5000/flights/${flight_id}`
-      );
+       , {withCredentials : true});
       setFlight(response.data);
     };
     fetchFlight();

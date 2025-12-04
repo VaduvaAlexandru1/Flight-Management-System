@@ -1,0 +1,10 @@
+.card{
+    height: clamp(100px, calc(300px - 5vh), 200px);
+    background-color: bisque;
+    border-radius: 20px;
+    padding: 2dvh 3dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

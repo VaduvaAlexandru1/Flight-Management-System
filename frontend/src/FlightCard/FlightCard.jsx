@@ -1,38 +1,62 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./flightcard.module.css";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import globalStyle from "../global.module.css";
+import { useContext } from "react";
+import { AuthContext } from "../Contexts/AuthContext";
 
-const FlightCard = ({ flight }) => {
+const FlightCard = ({ flight, fetch }) => {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const deleteFlight = async (flightId) => {
-    
-  } 
-
-  const updateFlight = async (flightId) => {
-
-  }
+    await axios.delete(`http://localhost:5000/flights/${flightId}` , {withCredentials : true});
+    fetch();
+  };
 
   return (
-    <div
-      className={styles["card"]}
-      onClick={() => navigate(`/flights-by-id/${flight.id}`)}
-    >
-      <div>
-        <div>Price : {flight?.price}</div>
-        <div>Number : {flight?.flight_number}</div>
-        <p>Status: {flight?.flight_status}</p>
+    <>
+      <div className={styles["card"]}>
+        <div>
+          <div>Price : {flight?.price}</div>
+          <div>Number : {flight?.flight_number}</div>
+          <p>Status: {flight?.details?.flight_status}</p>
 
-        <p>Departure Airport: {flight?.departure_airport}</p>
-        <p>Departure Time: {flight?.departure_time}</p>
+          <p>Departure Airport: {flight?.departure_airport}</p>
+          <p>Departure Time: {flight?.departure_time}</p>
 
-        <p>Arrival Airport: {flight?.arrival_airport}</p>
-        <p>Arrival Time: {flight?.arrival_time}</p>
+          <p>Arrival Airport: {flight?.arrival_airport}</p>
+          <p>Arrival Time: {flight?.arrival_time}</p>
+        </div>
+        <div className={globalStyle["buttons-container"]}>
+          <button
+            onClick={() => navigate(`/flights-by-id/${flight.id}`)}
+            className={globalStyle["small-button"]}
+          >
+            Details
+          </button>
+          {user?.is_admin ? (
+            <>
+              <button
+                onClick={() => deleteFlight(flight?.id)}
+                className={globalStyle["small-button"]}
+              >
+                Delete
+              </button>
+              <Link
+                to={`/update-flight-by-id/${flight.id}`}
+                className={globalStyle["small-button"]}
+              >
+                Update
+              </Link>
+            </>
+          ) : (
+            <button>Book</button>
+          )}
+        </div>
       </div>
-      <div>
-        <button onClick={() => deleteFlight(flight?.id)}>Delete</button>
-        <button onClick={() => updateFlight(flight?.id)}>Update</button>
-      </div>
-    </div>
+    </>
   );
 };
 
