@@ -8,10 +8,14 @@ from models.flight_details import FlightDetails
 from extensions import db
 import json
 import redis
+from dotenv import load_dotenv
+import os
+
+load_dotenv('../../.env')
 
 # REDIS CONNECTION
 
-r = redis.Redis(host="redis", port=6379, db=0, decode_responses=True)
+r = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
 
 # GET ALL FLIGHTS
