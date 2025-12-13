@@ -1,10 +1,18 @@
 import { useContext } from "react";
 import { AuthContext } from "../Contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import globalStyle from "../global.module.css";
+import axios from "axios";
 
 const Settings = () => {
   const { user, loading } = useContext(AuthContext);
+
+  const navigate = useNavigate()
+
+  const deleteUser = async () => {
+    await axios.delete("/auth/delete-account", { withCredentials: true });
+    navigate('/')
+  };
 
   return (
     <>
@@ -21,8 +29,13 @@ const Settings = () => {
               Admin panel
             </Link>
           )}
-          <button className={globalStyle["update-button"]}>Update account</button>
-          <button className={globalStyle["delete-button"]}>Delete account</button>
+          <Link className={globalStyle["update-button"]}>Update account</Link>
+          <button
+            className={globalStyle["delete-button"]}
+            onClick={() => deleteUser()}
+          >
+            Delete account
+          </button>
         </div>
       ) : (
         "Loading..."

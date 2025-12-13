@@ -17,6 +17,18 @@ const FlightCard = ({ flight, fetch, where }) => {
 
     fetch();
   };
+  function formatTime(timeStr) {
+    if (!timeStr) return "";
+    const dateObj = new Date(timeStr);
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return dateObj.toLocaleString(undefined, options);
+  }
 
   return (
     <>
@@ -27,10 +39,10 @@ const FlightCard = ({ flight, fetch, where }) => {
           <p>Status: {flight?.details?.flight_status}</p>
 
           <p>Departure Airport: {flight?.departure_airport}</p>
-          <p>Departure Time: {flight?.departure_time}</p>
+          <p>Departure Time: {formatTime(flight?.departure_time)}</p>
 
           <p>Arrival Airport: {flight?.arrival_airport}</p>
-          <p>Arrival Time: {flight?.arrival_time}</p>
+          <p>Arrival Time: {formatTime(flight?.arrival_time)}</p>
         </div>
         <div className={globalStyle["buttons-container"]}>
           <button

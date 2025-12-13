@@ -18,3 +18,5 @@ class Config:
     JWT_ACCESS_COOKIE_PATH = "/"
     JWT_COOKIE_CSRF_PROTECT = False
     JWT_COOKIE_SAMESITE = "Lax"
+    
+    # DB_URL = `postgresql://${procces.env.DB_USERNAME}:${procces.env.DB_PASWORD}`

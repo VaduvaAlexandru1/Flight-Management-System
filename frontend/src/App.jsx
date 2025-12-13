@@ -14,8 +14,9 @@ import FlightDetails from "./FlightDetails/FlightDetails";
 import { useNavigate } from "react-router-dom";
 import EditFlight from "./Flights/EditFlight/EditFlight";
 import Settings from "./Settings/Settings";
+import UpdateUser from "./UpdateUser/UpdateUser";
 function App() {
-  const { user,  } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -38,10 +39,14 @@ function App() {
             </Link>
           </>
         )}
-        {user && <Logout></Logout>}
-        <Link to="/settings" className={globalStyle["button"]}>
-          Settings
-        </Link>
+        {user && (
+          <>
+            <Logout></Logout>
+            <Link to="/settings" className={globalStyle["button"]}>
+              Settings
+            </Link>
+          </>
+        )}
       </nav>
 
       <Routes>
@@ -60,6 +65,7 @@ function App() {
           element={<EditFlight></EditFlight>}
         />
         <Route path="/settings" element=<Settings></Settings> />
+        <Route path="/update-user" element=<UpdateUser></UpdateUser>/>
       </Routes>
     </div>
   );

@@ -27,7 +27,6 @@ def get_all_flights():
     cashed_flights = r.get("all_flights")
     if cashed_flights:
         return jsonify(json.loads(cashed_flights)), 200
-
     flights = Flight.query.all()
     result = [flight.to_dict() for flight in flights]
     

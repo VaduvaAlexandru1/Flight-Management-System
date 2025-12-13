@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import validationSchemaFlight from "../ValidationSchemas";
-import initialValuesFlight from "../InitialValues";
+import { validationSchemaFlight } from "../ValidationSchemas";
+import { initialValuesFlight } from "../InitialValues";
 
 const FlightForm = ({
   handleFn,
@@ -19,7 +19,7 @@ const FlightForm = ({
           <Form className="flight-form">
             <div>
               <label>Flight Number</label>
-              <Field name="flight_number" type="text"/>
+              <Field name="flight_number" type="text" />
               <ErrorMessage
                 name="flight_number"
                 component="div"

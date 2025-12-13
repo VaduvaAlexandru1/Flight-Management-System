@@ -42,13 +42,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signup = async (firstName, lastName, username, password, isAdmin) => {
-    await axios.post(
+    const res = await axios.post(
       "/auth/signup",
       { firstName, lastName, username, password, isAdmin },
       {
         withCredentials: true,
       }
     );
+    console.log(res)
 
     await fetchUser()
   };

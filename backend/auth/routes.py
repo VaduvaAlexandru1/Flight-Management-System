@@ -136,4 +136,13 @@ def get_user():
     user = User.query.get(user_id)
     
     return user
+
+@auth_bp.delete('/delete-account')
+@jwt_required(locations=["cookies"])
+def delete_account():
+    user = get_user()
     
+    db.session.delete(user)
+    db.session.commit()
+    
+    return {"message": "User deleted successfully"}, 200

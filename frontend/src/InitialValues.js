@@ -16,4 +16,5 @@ const initialValuesFlight = {
   },
 };
 
-export default initialValuesFlight;
+export default initialValuesFlight
+export { initialValuesFlight};

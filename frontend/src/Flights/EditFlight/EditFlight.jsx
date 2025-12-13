@@ -26,7 +26,7 @@ const EditFlight = () => {
 
   const fetchFlight = async () => {
     const response = await axios.get(
-      `http://localhost:5000/flights/${flight_id}`
+      `http://localhost:5000/flights/${flight_id}` , {withCredentials : true}
     );
     setPrevFlight(response.data);
   };

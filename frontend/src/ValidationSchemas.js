@@ -19,4 +19,38 @@ const validationSchemaFlight = Yup.object().shape({
   }),
 });
 
-export default validationSchemaFlight;
+const validationSchemaUser = Yup.object({
+  firstName: Yup.string()
+    .required("First name is required")
+    .min(2, "First name must be at least 2 characters")
+    .max(30, "First name must be at most 30 characters"),
+
+  lastName: Yup.string()
+    .required("Last name is required")
+    .min(2, "Last name must be at least 2 characters")
+    .max(30, "Last name must be at most 30 characters"),
+
+  username: Yup.string()
+    .required("Username is required")
+    .min(3, "Username must be at least 3 characters")
+    .max(20, "Username must be at most 20 characters")
+    .matches(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain letters, numbers, and underscores"
+    ),
+
+  password: Yup.string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters")
+    .max(50, "Password must be at most 50 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    ),
+
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Please confirm your password"),
+});
+export default validationSchemaFlight
+export { validationSchemaUser, validationSchemaFlight };
